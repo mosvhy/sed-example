@@ -1,0 +1,19 @@
+for i in `ls in`;
+do 
+  echo "sed on in/$i"
+  sed -E '/alt="Poster/! s/^.*$//g' in/$i > ou/$i #1
+  sed -i -E ':a;N;$!ba;s/\n//g' ou/$i #2
+  sed -i -E 's/>(\s+)?<img/>\n<img/g' ou/$i #3
+  sed -i -E 's/^.*?title="(.*?)".*?src="(.*?)".*$/{"title":"\1","link":"\2"},/g' ou/$i #4
+done
+echo "finish"
+
+# ls in/
+# in/1.html
+# in/2.html
+# and so on
+
+#1 remove line that not contain 'alt="Poster' and write the result on folder ou/ with same name
+#2 remove newline
+#3 separate />(\s+)?<img/ each tagname into newline
+#4 replace single line (tagname attribute) into object in json
